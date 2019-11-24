@@ -1,60 +1,61 @@
-const defaultValue = {
+const pretendSettings = {
   'bool': 'true',
   'DateTime': 'DateTime.Now',
   'var': 'null',
   'byte': '1',
   'string': 6,
-  'int': Math.floor(100000 + Math.random() * 900000),
-  'float': (Math.random() * 1000).toString().substring(0, 5),
+  'int': () => Math.floor(100000 + Math.random() * 900000),
+  'float': () => (Math.random() * 1000).toString().substring(0, 5),
+  'sort': true
 }
 
 const types = {
-  'byte': defaultValue.byte,
-  'sbyte': defaultValue.byte,
-  'short': defaultValue.byte,
-  'ushort': defaultValue.byte,
-  'int': defaultValue.int,
-  'uint': defaultValue.int,
-  'long': defaultValue.int,
-  'ulong': defaultValue.int,
-  'float': defaultValue.float,
-  'double': defaultValue.float,
-  'decimal': defaultValue.float,
-  'char': `'${Math.random().toString(36).substr(2, 1)}'`,
-  'bool': defaultValue.bool,
-  'object': 'new object()',
-  'string': `"${Math.random().toString(36).substr(2, defaultValue.string)}"`,
-  'DateTime': defaultValue.DateTime,
-  'boolean': defaultValue.bool,
-  'var': 'null',
+  'byte': () => pretendSettings.byte,
+  'sbyte': () => pretendSettings.byte,
+  'short': () => pretendSettings.byte,
+  'ushort': () => pretendSettings.byte,
+  'int': () => pretendSettings.int(),
+  'uint': () => pretendSettings.int(),
+  'long': () => pretendSettings.int(),
+  'ulong': () => pretendSettings.int(),
+  'float': () => pretendSettings.float(),
+  'double': () => pretendSettings.float(),
+  'decimal': () => pretendSettings.float(),
+  'char': () => `'${Math.random().toString(36).substr(2, 1)}'`,
+  'bool': () => pretendSettings.bool,
+  'object': () => 'new object()',
+  'string': () => `"${Math.random().toString(36).substr(2, pretendSettings.string)}"`,
+  'DateTime': () => pretendSettings.DateTime,
+  'boolean': () => pretendSettings.bool,
+  'var': () => 'null',
 };
 
 const constructor = {
-  scope: '(public|private|protected|internal|private protected|private interna|protected internal|)',
+  scope: '(?:public|private|protected|internal|private protected|private interna|protected internal)?',
   type: '([a-zA-Z<> ,]+)',
   name: '([a-zA-Z_0-9]+)',
-  variable: () => `${constructor.scope}${constructor.type}[\s]+${constructor.name}`
+  variable: () => `${constructor.scope}${constructor.type}[\\s]+${constructor.name}`
 }
 
 const regex = [
   {
     // class
-    pattern: /(?:public|private|protected|internal|private protected|private internal|)[\s]+class[\s]+(.*)/gmi,
+    pattern: new RegExp(`${constructor.scope}[\\s]+class[\\s]+(.*)`, 'gmi'),
     module: ['class']
   },
   {
     // variable without [get set]
-    pattern: /(?:private|public|internal|protected|protected internal|private protected|)([a-zA-Z<> ,]+)[\s]+([a-zA-Z_0-9]+)[\s]*;[\s]*/gmi,
+    pattern: new RegExp(`${constructor.variable()}[\\s]*;[\\s]*`, 'gmi'),
     module: ['variable'],
   },
   {
     // variable with [get set]
-    pattern: /(?:private|public|internal|protected|protected internal|private protected|)([a-zA-Z<> ,]+)[\s]+([a-zA-Z_0-9]+)[\s]*{[\s]*get;[\s]*set;[\s]*}[\s]*(?:=(.*?);|)/gmi,
+    pattern: new RegExp(`${constructor.variable()}[\\s]*{[\\s]*get;[\\s]*set;[\\s]*}[\\s]*(?:=(.*?);|)`, 'gmi'),
     module: ['variable'],
   },
   {
     // variable with [get function, set function]
-    pattern: /(?:private|public|internal|protected|protected internal|private protected|)([a-zA-Z<> ,]+)[\s]+([a-zA-Z_0-9]+)[\s]*{[\s]*get[\s]*{(?:.*?)}[\s]*set[\s]*{(?:.*?)}[\s]*}[\s]*/gmi,
+    pattern: new RegExp(`${constructor.variable()}[\\s]*{[\\s]*get[\\s]*{(?:\\s*.*?\\s*)}[\\s]*set[\\s]*{(?:\\s*.*?\\s*)}[\\s]*}[\\s]*`, 'gmi'),
     module: ['variable'],
   }
 ];
@@ -68,7 +69,7 @@ const modules = {
 
     let [full, type, name, variable] = modules.trim(match);
 
-    const varData = types[type] || `new ${type}()`;
+    const varData = (types[type] && types[type]()) || `new ${type}()`;
 
     variables.push({
       name,
@@ -94,6 +95,7 @@ function Pretend(code) {
 
   regex.forEach(item => {
     const match = codeText.match(item.pattern);
+
     if (match) {
       match.forEach(matchItem => {
         item.module.forEach(module => {
@@ -103,8 +105,9 @@ function Pretend(code) {
     }
   });
 
-  variables.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+  if (pretendSettings.sort){
+    variables.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+  }
 
   return `new ${className}() \n{\n${variables.map(item => `${item.name} = ${item.data},`).join('\n')}\n}`;
-
 }
