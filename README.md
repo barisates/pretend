@@ -24,7 +24,7 @@ Open **[Pretend](http://barisates.com/pretend/ "Pretend")** to try it out.
 The default values you define to properties are supported by [Pretend](http://barisates.com/pretend/ "Pretend").
 
 ```csharp
-  public string Test { get; set; } = "Property Default";
+public string Test { get; set; } = "Property Default";
 ```
 
 New instances are created for the list, dictionary, struct, enum, and class types.
