@@ -94,7 +94,7 @@
 
       let [full, name] = modules.trim(match);
 
-      Pretend.class = name;
+      Pretend.class = name.replace('{', '');
     },
     defined: value => value.filter(item => (item)),
     trim: value => value.map(item => item.trim()),
@@ -124,7 +124,7 @@
     return `new ${Pretend.class}() \n{\n${Pretend.variables.map(item => `${item.name} = ${item.data},`).join('\n')}\n}`;
   }
 
-  Pretend.version = '1.0.0';
+  Pretend.version = '1.0.1';
 
   return Pretend;
 })));
