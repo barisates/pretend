@@ -22,12 +22,21 @@ function PretendCode() {
   outputCodeMirror.FormatDocument();
 }
 
+function CloseWarning() {
+  window.onbeforeunload = function() {
+        return "Do you really want to leave application?";
+ };
+}
+
+
 inputEditor.addEventListener('change', function () {
   PretendCode();
+  CloseWarning();
 });
 
 inputEditor.addEventListener('paste', function (e) {
   PretendCode();
+  CloseWarning();
 });
 
 
