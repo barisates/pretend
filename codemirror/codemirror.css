@@ -36,6 +36,7 @@
   text-align: right;
   color: #999;
   white-space: nowrap;
+  line-height: 20px;
 }
 
 .CodeMirror-guttermarker { color: black; }

@@ -75,6 +75,8 @@
     }
   ];
 
+  Pretend.patterns = regex.map(item => item.pattern);
+
   const modules = {
     variable: (value, item) => {
       let match = modules.defined(new RegExp(item.pattern).exec(modules.clear(value)));
@@ -124,7 +126,7 @@
     return `new ${Pretend.class}() \n{\n${Pretend.variables.map(item => `${item.name} = ${item.data},`).join('\n')}\n}`;
   }
 
-  Pretend.version = '1.0.2';
+  Pretend.version = '1.0.3';
 
   return Pretend;
 })));
