@@ -1,113 +1,130 @@
-const pretendSettings = {
-  'bool': 'true',
-  'DateTime': 'DateTime.Now',
-  'var': 'null',
-  'byte': '1',
-  'string': 6,
-  'int': () => Math.floor(100000 + Math.random() * 900000),
-  'float': () => (Math.random() * 1000).toString().substring(0, 5),
-  'sort': true
-}
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+      (global.Pretend = factory());
+}(this, (function () {
+  'use strict';
 
-const types = {
-  'byte': () => pretendSettings.byte,
-  'sbyte': () => pretendSettings.byte,
-  'short': () => pretendSettings.byte,
-  'ushort': () => pretendSettings.byte,
-  'int': () => pretendSettings.int(),
-  'uint': () => pretendSettings.int(),
-  'long': () => pretendSettings.int(),
-  'ulong': () => pretendSettings.int(),
-  'float': () => pretendSettings.float(),
-  'double': () => pretendSettings.float(),
-  'decimal': () => pretendSettings.float(),
-  'char': () => `'${Math.random().toString(36).substr(2, 1)}'`,
-  'bool': () => pretendSettings.bool,
-  'object': () => 'new object()',
-  'string': () => `"${Math.random().toString(36).substr(2, pretendSettings.string)}"`,
-  'DateTime': () => pretendSettings.DateTime,
-  'boolean': () => pretendSettings.bool,
-  'var': () => 'null',
-};
+  // Class Name
+  Pretend.class = '';
 
-const constructor = {
-  scope: '(?:public|private|protected|internal|private protected|private interna|protected internal)?',
-  type: '([a-zA-Z<> ,]+)',
-  name: '([a-zA-Z_0-9]+)',
-  variable: () => `${constructor.scope}${constructor.type}[\\s]+${constructor.name}`
-}
+  // Class Variables
+  Pretend.variables = [];
 
-const regex = [
-  {
-    // class
-    pattern: new RegExp(`${constructor.scope}[\\s]+class[\\s]+(.*)`, 'gmi'),
-    module: ['class']
-  },
-  {
-    // variable without [get set]
-    pattern: new RegExp(`${constructor.variable()}[\\s]*;[\\s]*`, 'gmi'),
-    module: ['variable'],
-  },
-  {
-    // variable with [get set]
-    pattern: new RegExp(`${constructor.variable()}[\\s]*{[\\s]*get;[\\s]*set;[\\s]*}[\\s]*(?:=(.*?);|)`, 'gmi'),
-    module: ['variable'],
-  },
-  {
-    // variable with [get function, set function]
-    pattern: new RegExp(`${constructor.variable()}[\\s]*{[\\s]*get[\\s]*{(?:\\s*.*?\\s*)}[\\s]*set[\\s]*{(?:\\s*.*?\\s*)}[\\s]*}[\\s]*`, 'gmi'),
-    module: ['variable'],
+  // Settings
+  Pretend.settings = {
+    'bool': 'true',
+    'DateTime': 'DateTime.Now',
+    'var': 'null',
+    'byte': '1',
+    'string': 6,
+    'int': () => Math.floor(100000 + Math.random() * 900000),
+    'float': () => (Math.random() * 1000).toString().substring(0, 5),
+    'sort': true
   }
-];
 
-let variables = [];
-let className = '';
+  // Variable Types
+  const types = {
+    'byte': () => Pretend.settings.byte,
+    'sbyte': () => Pretend.settings.byte,
+    'short': () => Pretend.settings.byte,
+    'ushort': () => Pretend.settings.byte,
+    'int': () => Pretend.settings.int(),
+    'uint': () => Pretend.settings.int(),
+    'long': () => Pretend.settings.int(),
+    'ulong': () => Pretend.settings.int(),
+    'float': () => Pretend.settings.float(),
+    'double': () => Pretend.settings.float(),
+    'decimal': () => Pretend.settings.float(),
+    'char': () => `'${Math.random().toString(36).substr(2, 1)}'`,
+    'bool': () => Pretend.settings.bool,
+    'object': () => 'new object()',
+    'string': () => `"${Math.random().toString(36).substr(2, Pretend.settings.string)}"`,
+    'DateTime': () => Pretend.settings.DateTime,
+    'boolean': () => Pretend.settings.bool,
+    'var': () => 'null',
+  };
 
-const modules = {
-  variable: (value, item) => {
-    let match = modules.defined(new RegExp(item.pattern).exec(modules.clear(value)));
+  const constructor = {
+    scope: '(?:public|private|protected|internal|private protected|private interna|protected internal)?',
+    type: '([a-zA-Z<> ,]+)',
+    name: '([a-zA-Z_0-9]+)',
+    variable: () => `${constructor.scope}${constructor.type}[\\s]+${constructor.name}`
+  }
 
-    let [full, type, name, variable] = modules.trim(match);
-
-    const varData = (types[type] && types[type]()) || `new ${type}()`;
-
-    variables.push({
-      name,
-      data: variable || varData
-    });
-  },
-  class: (value, item) => {
-    let match = modules.defined(new RegExp(item.pattern).exec(modules.clear(value)));
-
-    let [full, name] = modules.trim(match);
-
-    className = name;
-  },
-  defined: value => value.filter(item => (item)),
-  trim: value => value.map(item => item.trim()),
-  clear: value => value.trim().replace(/\n/g, ''),
-}
-
-
-function Pretend(code) {
-  variables = [];
-  const codeText = code.trim();
-
-  regex.forEach(item => {
-    const match = codeText.match(item.pattern);
-
-    if (match) {
-      match.forEach(matchItem => {
-        item.module.forEach(module => {
-          modules[module](matchItem, item);
-        });
-      });
+  const regex = [
+    {
+      // class
+      pattern: new RegExp(`${constructor.scope}[\\s]+class[\\s]+(.*)`, 'gmi'),
+      module: ['class']
+    },
+    {
+      // variable without [get set]
+      pattern: new RegExp(`${constructor.variable()}[\\s]*;[\\s]*`, 'gmi'),
+      module: ['variable'],
+    },
+    {
+      // variable with [get set]
+      pattern: new RegExp(`${constructor.variable()}[\\s]*{[\\s]*get;[\\s]*set;[\\s]*}[\\s]*(?:=(.*?);|)`, 'gmi'),
+      module: ['variable'],
+    },
+    {
+      // variable with [get function, set function]
+      pattern: new RegExp(`${constructor.variable()}[\\s]*{[\\s]*get[\\s]*{(?:\\s*.*?\\s*)}[\\s]*set[\\s]*{(?:\\s*.*?\\s*)}[\\s]*}[\\s]*`, 'gmi'),
+      module: ['variable'],
     }
-  });
+  ];
 
-  if (pretendSettings.sort){
-    variables.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+  const modules = {
+    variable: (value, item) => {
+      let match = modules.defined(new RegExp(item.pattern).exec(modules.clear(value)));
+
+      let [full, type, name, variable] = modules.trim(match);
+
+      const varData = (types[type] && types[type]()) || `new ${type}()`;
+
+      Pretend.variables.push({
+        name,
+        type: type,
+        data: variable || varData
+      });
+    },
+    class: (value, item) => {
+      let match = modules.defined(new RegExp(item.pattern).exec(modules.clear(value)));
+
+      let [full, name] = modules.trim(match);
+
+      Pretend.class = name;
+    },
+    defined: value => value.filter(item => (item)),
+    trim: value => value.map(item => item.trim()),
+    clear: value => value.trim().replace(/\n/g, ''),
   }
 
-  return `new ${className}() \n{\n${variables.map(item => `${item.name} = ${item.data},`).join('\n')}\n}`;
-}
+
+  function Pretend(code) {
+    Pretend.variables = [];
+    const codeText = code.trim();
+
+    regex.forEach(item => {
+      const match = codeText.match(item.pattern);
+      if (match) {
+        match.forEach(matchItem => {
+          item.module.forEach(module => {
+            modules[module](matchItem, item);
+          });
+        });
+      }
+    });
+
+    if (Pretend.settings.sort) {
+      Pretend.variables.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    }
+
+    return `new ${Pretend.class}() \n{\n${Pretend.variables.map(item => `${item.name} = ${item.data},`).join('\n')}\n}`;
+  }
+
+  Pretend.version = '1.0.0';
+
+  return Pretend;
+})));

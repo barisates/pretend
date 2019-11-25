@@ -6,8 +6,11 @@
   <meta charset="utf-8">
 
   <title>Pretend</title>
-  <meta name="description" content="Fill the class by random data.">
+  <meta name="description" content="Fill the c# classes with random data based on property types.">
   <meta name="author" content="barisates">
+
+  <link rel="shortcut icon" href="css/img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="css/img/favicon.ico" type="image/x-icon">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
@@ -68,18 +71,22 @@
         <span class="tooltiptext tooltip-left">Default Settings</span>
         <div class="settingsWindow">
           <div>
-            <span>Boolean</span> <input type="text" value="true" spellcheck="false" id="SettingsBoolean" />
+            <span>Boolean</span> <input type="text" spellcheck="false" data-key="bool" class="settings-item" />
           </div>
           <div>
-            <span>DateTime</span> <input type="text" value="DateTime.Now" spellcheck="false" id="SettingsDateTime" />
+            <span>DateTime</span> <input type="text" spellcheck="false" data-key="DateTime" class="settings-item" />
           </div>
           <div>
-            <span>Var</span> <input type="text" value="null" spellcheck="false" id="SettingsVar" />
+            <span>Var</span> <input type="text" spellcheck="false" data-key="var" class="settings-item" />
           </div>
           <div>
-            <span>Byte</span> <input type="text" value="1" spellcheck="false" id="SettingsByte"  />
+            <span>Byte</span> <input type="text" spellcheck="false" data-key="byte" class="settings-item" />
           </div>
-          <button type="button" id="SaveSettings" class="save">Save</button>
+          <div>
+            <span>String Length</span> <input type="number" spellcheck="false" data-key="string"
+              class="settings-item" />
+          </div>
+          <button type="button" id="save" class="save">Save</button>
         </div>
       </a>
       <div class="bottom">
@@ -87,6 +94,7 @@
       </div>
     </nav>
     <script src="js/pretend.js"></script>
+    <script src="js/helper.js"></script>
     <script src="js/scripts.js"></script>
   </body>
 

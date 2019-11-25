@@ -38,6 +38,12 @@
    text-transform: lowercase;
  }
 
+ header .brand.logo {
+   background: url(img/logo.png) no-repeat left center;
+   background-size: 24px;
+   padding-left: 25px;
+ }
+
  header .title {
    font-size: 50%;
    color: #bae0ff;
@@ -131,9 +137,9 @@
  }
 
  nav a:active {
-  -moz-box-shadow:    inset 0 0 10px #c5c5c5;
-  -webkit-box-shadow: inset 0 0 10px #c5c5c5;
-  box-shadow:         inset 0 0 10px #c5c5c5;
+   -moz-box-shadow: inset 0 0 10px #c5c5c5;
+   -webkit-box-shadow: inset 0 0 10px #c5c5c5;
+   box-shadow: inset 0 0 10px #c5c5c5;
  }
 
  nav .bottom {
@@ -152,13 +158,9 @@
    color: #333;
  }
 
-
-
-
  /* Tooltip */
 
- .tooltip .tooltiptext,
- .settingsWindow {
+ .tooltip .tooltiptext, .settingsWindow {
    visibility: hidden;
    background-color: #333;
    color: #fff;
@@ -175,8 +177,7 @@
    right: 105%;
  }
 
- .tooltip:hover .tooltiptext,
- #settings.select .settingsWindow {
+ .tooltip:hover .tooltiptext, #settings.select .settingsWindow {
    visibility: visible;
    opacity: 1;
  }
@@ -193,48 +194,60 @@
    border-color: transparent transparent transparent #333;
  }
 
-
  /* settings window */
 
  .settingsWindow {
-  color:#333 !important;
-  border: 1px solid #ddd !important;
-  background-color: #f7f7f7 !important;
-  z-index: 99 !important;
-  margin-top: -23px;
-  padding: 10px;
-  text-align: left;
-  font-size: 11px;
-}
-.settingsWindow div {
-  height: 30px;
-}
-.settingsWindow span {
-  display: inline-block;
-  width: 50px;
-}
-.settingsWindow input {
-  width: 100px;
-  font-size: 11px;
-  font-family: 'Open Sans', sans-serif;
-  padding: 3px 5px;
-  outline: none;
-  border-radius: 4px;
-  border: 1px solid #ececec;
-}
-.settingsWindow::after {
-  border-color: transparent transparent transparent #ddd !important;
-}
-.settingsWindow button {
-  float: right;
-  background-color: #333;
-  border: 1px solid;
-  color: #fff;
-  padding: 3px 8px;
-  font-family: 'Open Sans', sans-serif;
-  border-radius: 4px;
-  outline: none;
-}
+   color: #333 !important;
+   border: 1px solid #ddd !important;
+   background-color: #f7f7f7 !important;
+   z-index: 99 !important;
+   margin-top: -23px;
+   padding: 10px;
+   text-align: left;
+   font-size: 11px;
+   cursor: default;
+ }
+
+ .settingsWindow div {
+   height: 30px;
+ }
+
+ .settingsWindow span {
+   display: inline-block;
+   width: 70px;
+ }
+
+ .settingsWindow input {
+   width: 100px;
+   font-size: 11px;
+   font-family: 'Open Sans', sans-serif;
+   padding: 3px 5px;
+   outline: none;
+   border-radius: 4px;
+   border: 1px solid #ececec;
+ }
+
+ .settingsWindow::after {
+   border-color: transparent transparent transparent #ddd !important;
+ }
+
+ .settingsWindow button {
+   float: right;
+   background-color: #333;
+   border: 1px solid;
+   color: #fff;
+   padding: 3px 8px;
+   font-family: 'Open Sans', sans-serif;
+   border-radius: 4px;
+   outline: none;
+   cursor: pointer;
+ }
+
+ .settingsWindow button:active {
+   -moz-box-shadow: inset 0 0 10px #000;
+   -webkit-box-shadow: inset 0 0 10px #000;
+   box-shadow: inset 0 0 10px #000;
+ }
 
  /* CodeMirror */
 
