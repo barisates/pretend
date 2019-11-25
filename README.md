@@ -1,4 +1,5 @@
-# pretend
+[![pretend](http://barisates.com/git/pretend/logo-fit.png "pretend")](http://barisates.com/pretend/ "pretend")
+------------
 Fill the c# class by random data.
 
 ![](https://img.shields.io/github/stars/barisates/pretend.svg) ![](https://img.shields.io/github/forks/barisates/pretend.svg) ![](https://img.shields.io/github/issues/barisates/pretend.svg)
