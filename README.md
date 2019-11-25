@@ -1,4 +1,4 @@
-[![pretend](http://barisates.com/git/pretend/logo-fit.png "pretend")](http://barisates.com/pretend/ "pretend")
+[![pretend](http://barisates.com/git/pretend/logo-fit.png "pretend")](https://barisates.github.io/pretend/ "pretend")
 ------------
 Fill the c# class by random data.
 
@@ -8,7 +8,7 @@ Fill the c# class by random data.
 
 Pretend is an online developer tool. Fills the c# classes with random data based on property types. It makes it easy to test your methods, api endpoints and functions. We usually use this tool to fill data transfer objects (DTO) when writing unit tests.
 
-Open **[Pretend](http://barisates.com/pretend/ "Pretend")** to try it out.
+Open **[Pretend](https://barisates.github.io/pretend/ "Pretend")** to try it out.
 
 #### Features
 
@@ -21,7 +21,7 @@ Open **[Pretend](http://barisates.com/pretend/ "Pretend")** to try it out.
 
 #####  Usage Examples
 
-The default values you define to properties are supported by [Pretend](http://barisates.com/pretend/ "Pretend").
+The default values you define to properties are supported by [Pretend](https://barisates.github.io/pretend/ "Pretend").
 
 ```csharp
 public string Test { get; set; } = "Property Default";

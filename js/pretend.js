@@ -46,7 +46,7 @@
   };
 
   const constructor = {
-    scope: '(?:public|private|protected|internal|private protected|private interna|protected internal)?',
+    scope: '(?:public|private|protected|internal|partial|private protected|private interna|protected internal)?',
     type: '([a-zA-Z<> ,]+)',
     name: '([a-zA-Z_0-9]+)',
     variable: () => `${constructor.scope}${constructor.type}[\\s]+${constructor.name}`
@@ -124,7 +124,7 @@
     return `new ${Pretend.class}() \n{\n${Pretend.variables.map(item => `${item.name} = ${item.data},`).join('\n')}\n}`;
   }
 
-  Pretend.version = '1.0.1';
+  Pretend.version = '1.0.2';
 
   return Pretend;
 })));
