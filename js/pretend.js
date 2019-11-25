@@ -81,26 +81,33 @@
     variable: (value, item) => {
       let match = modules.defined(new RegExp(item.pattern).exec(modules.clear(value)));
 
-      let [full, type, name, variable] = modules.trim(match);
+      if (match) {
+        let [full, type, name, variable] = modules.trim(match);
 
-      const varData = (types[type] && types[type]()) || `new ${type}()`;
+        const varData = (types[type] && types[type]()) || `new ${type}()`;
 
-      Pretend.variables.push({
-        name,
-        type: type,
-        data: variable || varData
-      });
+        Pretend.variables.push({
+          name,
+          type: type,
+          data: variable || varData
+        });
+      }
     },
     class: (value, item) => {
       let match = modules.defined(new RegExp(item.pattern).exec(modules.clear(value)));
 
-      let [full, name] = modules.trim(match);
+      if (match) {
 
-      Pretend.class = name.replace('{', '');
+        let [full, name] = modules.trim(match);
+
+        Pretend.class = name.replace('{', '');
+
+      }
+
     },
-    defined: value => value.filter(item => (item)),
-    trim: value => value.map(item => item.trim()),
-    clear: value => value.trim().replace(/\n/g, ''),
+    defined: value => value && value.filter(item => (item)),
+    trim: value => value && value.map(item => item.trim()),
+    clear: value => value && value.trim().replace(/\n/g, ''),
   }
 
 
@@ -126,7 +133,7 @@
     return `new ${Pretend.class}() \n{\n${Pretend.variables.map(item => `${item.name} = ${item.data},`).join('\n')}\n}`;
   }
 
-  Pretend.version = '1.0.3';
+  Pretend.version = '1.0.4';
 
   return Pretend;
 })));
