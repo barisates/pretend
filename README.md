@@ -6,7 +6,7 @@ Fill the c# class by random data.
 
 #### Intro
 
-Pretend is an online developer tool. Fills the c# classes with random data based on property types. It makes it easy to test your methods, api endpoints, and functions. We usually use this tool to fill data transfer objects (DTO) when writing unit tests.
+Pretend is an online developer tool. Fills the c# classes with random data based on property types. It makes it easy to test your methods, api endpoints and functions. We usually use this tool to fill data transfer objects (DTO) when writing unit tests.
 
 Open **[Pretend](http://barisates.com/pretend/ "Pretend")** to try it out.
 
